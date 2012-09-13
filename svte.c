@@ -193,13 +193,18 @@ gboolean event_button(GtkWidget *widget, GdkEventButton *button_event) {
 
 /* function that closes the current window */
 static void window_close(struct window *w) {
-
   gtk_widget_destroy(w->notebook);
   gtk_widget_destroy(w->win);
   g_free(w);
+}
 
+/* event handler for closing windows
+   close program when all windows are closed */
+static void window_destroy(GtkWidget *widget){
   GList *list = gtk_window_list_toplevels();
-  if(g_list_length(list) < 1) {
+  /* 3 is 1 for the window being destroyed and 1 for the remaining
+     tooltip widget */
+  if(g_list_length(list) < 3 ) {
     quit();
   }
 }
@@ -417,7 +422,6 @@ static void tab_new(struct window *w) {
 /* setup the main window */
 static void new_window() {
 
-
   window *w = g_new0(window, 1);
 
   term_data_id = g_quark_from_static_string("svte");
@@ -442,6 +446,7 @@ static void new_window() {
   /* add the callback signals */
   g_signal_connect(G_OBJECT(w->win), "key-press-event", G_CALLBACK(event_key), w);
   g_signal_connect(G_OBJECT(w->notebook), "switch-page", G_CALLBACK(tab_focus), w);
+  g_signal_connect(G_OBJECT(w->win), "destroy", G_CALLBACK(window_destroy), NULL);
 
   set_window_title(get_current_term(w));
 } 
