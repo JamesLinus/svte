@@ -254,7 +254,7 @@ static char* tab_get_cwd(struct term* t)
     char buf[255+1];
     int len;
 
-    file = g_strdup_printf ("/proc/%d/cwd", (int)t->pid);
+    file = g_strdup_printf ("/proc/%d/cwd", t->pid);
     len = readlink (file, buf, sizeof (buf) - 1);
 
     if (len > 0 && buf[0] == '/') {
