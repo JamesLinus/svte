@@ -82,11 +82,16 @@ static inline term* get_nth_term(window *w, guint page);
 
 static GQuark term_data_id = 0;
 static Settings *config;
+
 static gchar *config_file = NULL;
+static gchar *start_program = NULL;
 static gboolean show_version = FALSE;
+
 static GOptionEntry options[] = { 
   { "config", 'c', 0, G_OPTION_ARG_FILENAME, &config_file,
     "Path to configuration file to use.", NULL }, 
+  { "execute", 'e', 0, G_OPTION_ARG_STRING, &start_program,
+    "execute this command.", NULL }, 
   { "version", 0, 0, G_OPTION_ARG_NONE, &show_version,
     "Print version information and exit", NULL }, 
   { NULL } 
@@ -347,14 +352,21 @@ static void tab_focus(GtkNotebook *notebook, GtkNotebookPage *page,
 static void tab_new(struct window *w) {
   term *t;
   int tmp;
-
-
   char **args = 0;
-  const gchar *shell = g_getenv("SHELL");
-  if (!shell) {
-    shell = "sh";
+
+  // if the user declares a program to execute then just do that but otherwise
+  // but otherwise use our default shell. 
+  if(start_program == NULL) {
+    start_program = g_getenv("SHELL");
+    if (!start_program) {
+      start_program = "sh";
+    }
   }
-  g_shell_parse_argv(shell, 0, &args, 0);
+
+  // Execute the program but then reset start_program to null so that the start
+  // progam will only execute one time.
+  g_shell_parse_argv(start_program, 0, &args, 0);
+  start_program = NULL;
 
   t = g_new0(term, 1);
   t->label = gtk_label_new("");
@@ -578,6 +590,7 @@ int main(int argc, char* argv[]) {
   if (config_file == NULL) {
     config_file = DEFAULT_CONFIG_FILE;
   }
+
   parse_config_file(config_file);
 
   new_window();
