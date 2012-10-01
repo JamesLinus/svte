@@ -84,7 +84,7 @@ static GQuark term_data_id = 0;
 static Settings *config;
 
 static gchar *config_file = NULL;
-static gchar *start_program = NULL;
+const static gchar *start_program = NULL;
 static gboolean show_version = FALSE;
 
 static GOptionEntry options[] = { 
