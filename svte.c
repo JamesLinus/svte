@@ -33,7 +33,7 @@ typedef struct window {
 typedef struct term {
   GtkWidget *vte;
   GtkWidget *label;
-  GPid *pid;
+  GPid pid;
   struct window *w;
 } term;
 
@@ -380,14 +380,14 @@ static void tab_new(struct window *w) {
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->notebook), FALSE);
     vte_terminal_fork_command_full(VTE_TERMINAL(t->vte), 
         VTE_PTY_DEFAULT, NULL, 
-        args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, t->pid, NULL);
+        args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &t->pid, NULL);
     tab_geometry_hints(t);
   } else {
     struct term *previous = get_nth_term(w, gtk_notebook_get_current_page(GTK_NOTEBOOK(w->notebook)));
 
     vte_terminal_fork_command_full(VTE_TERMINAL(t->vte), 
         VTE_PTY_DEFAULT, tab_get_cwd(previous), 
-        args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, t->pid, NULL);
+        args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &t->pid, NULL);
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->notebook), TRUE);
   }
 
