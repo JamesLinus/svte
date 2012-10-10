@@ -173,6 +173,16 @@ gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
       return TRUE;
     }
   }
+    
+  if(g == GDK_KEY_Forward) {
+    tab_switch(TRUE, w);
+    return  TRUE;
+  }
+
+  if(g == GDK_KEY_Back) {
+    tab_switch(FALSE, w);
+    return  TRUE;
+  }
   return FALSE;
 }
 
