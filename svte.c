@@ -572,6 +572,11 @@ static void parse_config_file(gchar *config_file) {
     config->font = DEFAULT_FONT;
   }
 
+  if (NULL == config->window_width || NULL == config->window_height) {
+    config->window_width = DEFAULT_WINDOW_WIDTH;
+    config->window_height = DEFAULT_WINDOW_HEIGHT;
+  }
+
   if(NULL == config->browser_command) {
     config->browser_command = DEFAULT_BROWSER_COMMAND; 
   }

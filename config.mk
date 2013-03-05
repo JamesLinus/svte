@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 # svte version:
 VERSION = 0.1.4.1
 
@@ -28,20 +27,16 @@ MANPREFIX = ${PREFIX}/share/man
 
 
 # includes and libs
-
 GTKINC=$(shell pkg-config --cflags gtk+-2.0 vte )
 GTKLIB=-lvte
 
 INCS = -I. -I/usr/include ${GTKINC}
 LIBS = -L/usr/lib -lc ${GTKLIB}
+
 # flags
 CPPFLAGS = -DVERSION=\"${VERSION}\"
 CFLAGS = -mtune=native -std=gnu99 -O3 ${INCS} ${CPPFLAGS}
 LDFLAGS = -s ${LIBS}
-
-# Solaris
-#CFLAGS = -fast ${INCS} -DVERSION=\"${VERSION}\"
-#LDFLAGS = ${LIBS}
 
 # compiler and linker
 CC = cc
