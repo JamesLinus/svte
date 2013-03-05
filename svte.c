@@ -92,7 +92,7 @@ static GOptionEntry options[] = {
     "Path to configuration file to use.", NULL }, 
   { "execute", 'e', 0, G_OPTION_ARG_STRING, &start_program,
     "execute this command.", NULL }, 
-  { "version", 0, 0, G_OPTION_ARG_NONE, &show_version,
+  { "version", 'v', 0, G_OPTION_ARG_NONE, &show_version,
     "Print version information and exit", NULL }, 
   { NULL } 
 }; 
@@ -598,7 +598,7 @@ int main(int argc, char* argv[]) {
   }
 
   if (show_version) {
-    printf(VERSION);
+    printf("%s \n", VERSION);
     return 0;
   }
 
