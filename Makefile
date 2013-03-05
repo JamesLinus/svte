@@ -54,6 +54,9 @@ dist: clean
 	@rm -rf svte-${VERSION}
 
 install: all
+	@echo installing manpage to ${DESTDIR}${MANPREFIX}/man1
+	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
+	@cp -f svte.1 ${DESTDIR}${MANPREFIX}/man1/svte.1
 	@echo installing executable file to ${DESTDIR}${PREFIX}/bin
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f svte ${DESTDIR}${PREFIX}/bin
@@ -62,6 +65,8 @@ install: all
 uninstall:
 	@echo removing executable file from ${DESTDIR}${PREFIX}/bin
 	@rm -f ${DESTDIR}${PREFIX}/bin/svte
+	@echo removing manpage from ${DESTDIR}${MANPREFIX}/man1/
+	@rm -f ${DESTDIR}${MANPREFIX}/man1/svte.1
 
 
 .PHONY: all options clean dist install uninstall
