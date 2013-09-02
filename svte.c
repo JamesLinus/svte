@@ -19,7 +19,7 @@
 
 #include "defaults.h"
 #include <gdk/gdkkeysyms.h>
-#include <glib/goption.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <vte/vte.h>
 #include <unistd.h>
