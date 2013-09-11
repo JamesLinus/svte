@@ -43,13 +43,13 @@ svte: ${OBJ}
 
 clean:
 	@echo cleaning
-	@rm -f svte ${OBJ} mt-${VERSION}.tar.gz
+	@rm -f svte ${OBJ} svte-${VERSION}.tar.gz
 
 dist: clean
 	@echo creating dist tarball
 	@mkdir -p svte-${VERSION}
 	@cp -R Makefile config.mk ${SRC} svte-${VERSION}
-	@tar -cf svte-${VERSION}.tar mt-${VERSION}
+	@tar -cf svte-${VERSION}.tar svte-${VERSION}
 	@gzip svte-${VERSION}.tar
 	@rm -rf svte-${VERSION}
 

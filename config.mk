@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # svte version:
-VERSION = 0.1.4.1
+VERSION = 0.1.4.2
 
 # Customize below to fit your system
 
