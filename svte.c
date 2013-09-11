@@ -76,6 +76,7 @@ static void tab_focus(GtkNotebook *notebook, GtkNotebookPage *page,
     guint page_num, struct window *w);
 static void set_window_title(term *t);
 static void launch_url(char *url);
+static void zoom(gboolean b, struct term *t);
 
 static inline term* get_current_term(window *w);
 static inline term* get_nth_term(window *w, guint page);
@@ -122,6 +123,17 @@ static void launch_url(char *url) {
   g_spawn_command_line_async(g_strconcat(config->browser_command, " ", url, NULL), NULL);	
 }
 
+static void zoom(gboolean b, struct term *t) {
+
+  int size = -2000;
+  if(b) 
+    size = 2000;
+  PangoFontDescription *font = vte_terminal_get_font(VTE_TERMINAL(t->vte));
+  pango_font_description_set_size(font, pango_font_description_get_size(font) + size);
+  vte_terminal_set_font(VTE_TERMINAL(t->vte), font);
+
+}
+
 
 /* key event handler */
 gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
@@ -146,6 +158,14 @@ gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
     }
     if (g == GDK_V) {
       vte_terminal_paste_clipboard(VTE_TERMINAL(get_current_term(w)->vte));
+      return TRUE;
+    }
+    if (g == GDK_plus) {
+      zoom(TRUE, get_current_term(w));
+      return TRUE;
+    }
+    if (g == GDK_underscore) {
+      zoom(FALSE, get_current_term(w));
       return TRUE;
     }
     if (g == GDK_C) {
@@ -173,7 +193,7 @@ gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
       return TRUE;
     }
   }
-    
+
   if(g == GDK_KEY_Forward) {
     tab_switch(TRUE, w);
     return  TRUE;
