@@ -46,6 +46,9 @@ url_regex=(ftp|http)s?://[-a-zA-Z0-9.?$%&/=_~#.,:;+]*
 # true to enable a visible bell, false to disable it.
 visible_bell=true
 
+# set to false if you do not want to see the tab bar even with multiple tabs.
+show_tabbar=true
+
 # Initial window height in pixels.
 window_height=500
 
