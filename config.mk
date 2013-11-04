@@ -28,7 +28,7 @@ MANPREFIX = ${PREFIX}/share/man
 
 # includes and libs
 GTKINC=$(shell pkg-config --cflags gtk+-2.0 vte glib-2.0)
-GTKLIB=-lvte
+GTKLIB=$(shell pkg-config --libs gtk+-2.0 vte glib-2.0)
 
 INCS = -I. -I/usr/include ${GTKINC}
 LIBS = -L/usr/lib -lc ${GTKLIB}
