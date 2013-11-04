@@ -362,13 +362,24 @@ static void tab_title(GtkWidget *widget, term *t) {
 
 /* set the window title */
 static void set_window_title(term *t){
-  const char *title = vte_terminal_get_window_title(VTE_TERMINAL(t->vte));
+	gint number_of_pages = 0;
+  const char *term_title = vte_terminal_get_window_title(VTE_TERMINAL(t->vte));
 
-  if (title == NULL) {
-    title = "svte";
+  if (term_title == NULL) {
+    term_title = "svte";
   }
 
-  gtk_window_set_title(GTK_WINDOW(t->w->win), title);
+	number_of_pages = gtk_notebook_get_n_pages(GTK_NOTEBOOK(t->w->notebook));
+
+  if ( number_of_pages > 1) {
+		char *title = g_strdup_printf("%s (%d/%d)", term_title,
+															gtk_notebook_page_num(GTK_NOTEBOOK(t->w->notebook), t->vte) + 1,
+															number_of_pages);
+		gtk_window_set_title(GTK_WINDOW(t->w->win), title);
+		g_free(title);
+	} else {
+		gtk_window_set_title(GTK_WINDOW(t->w->win), term_title);
+	}
 }
 
 /* focus the tab */
