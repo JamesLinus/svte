@@ -51,6 +51,7 @@ typedef struct {
   gdouble bg_saturation;
   gchar *bg_image;
   gchar *url_regex;
+  gboolean show_tabbar;
   gboolean visible_bell;
   gint window_height;
   gint window_width;
@@ -398,7 +399,8 @@ static void tab_new(struct window *w) {
     vte_terminal_fork_command_full(VTE_TERMINAL(t->vte), 
         VTE_PTY_DEFAULT, tab_get_cwd(previous), 
         args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &t->pid, NULL);
-    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->notebook), TRUE);
+    if(config->show_tabbar == TRUE)
+      gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->notebook), TRUE);
   }
 
   g_object_set_qdata_full(G_OBJECT(gtk_notebook_get_nth_page(
@@ -536,6 +538,8 @@ static void parse_config_file(gchar *config_file) {
       keyfile, "ui", "bg_saturation", NULL);
   config->url_regex = g_key_file_get_string(
       keyfile, "ui", "url_regex", NULL);
+  config->show_tabbar = g_key_file_get_boolean(
+      keyfile, "ui", "show_tabbar", NULL);
   config->visible_bell = g_key_file_get_boolean(
       keyfile, "ui", "visible_bell", NULL);
   config->window_height = g_key_file_get_integer(
