@@ -43,17 +43,20 @@ svte: ${OBJ}
 
 clean:
 	@echo cleaning
-	@rm -f svte ${OBJ} mt-${VERSION}.tar.gz
+	@rm -f svte ${OBJ} svte-${VERSION}.tar.gz
 
 dist: clean
 	@echo creating dist tarball
 	@mkdir -p svte-${VERSION}
 	@cp -R Makefile config.mk ${SRC} svte-${VERSION}
-	@tar -cf svte-${VERSION}.tar mt-${VERSION}
+	@tar -cf svte-${VERSION}.tar svte-${VERSION}
 	@gzip svte-${VERSION}.tar
 	@rm -rf svte-${VERSION}
 
 install: all
+	@echo installing manpage to ${DESTDIR}${MANPREFIX}/man1
+	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
+	@cp -f svte.1 ${DESTDIR}${MANPREFIX}/man1/svte.1
 	@echo installing executable file to ${DESTDIR}${PREFIX}/bin
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f svte ${DESTDIR}${PREFIX}/bin
@@ -62,6 +65,8 @@ install: all
 uninstall:
 	@echo removing executable file from ${DESTDIR}${PREFIX}/bin
 	@rm -f ${DESTDIR}${PREFIX}/bin/svte
+	@echo removing manpage from ${DESTDIR}${MANPREFIX}/man1/
+	@rm -f ${DESTDIR}${MANPREFIX}/man1/svte.1
 
 
 .PHONY: all options clean dist install uninstall

@@ -77,6 +77,7 @@ static void tab_focus(GtkNotebook *notebook, GtkNotebookPage *page,
     guint page_num, struct window *w);
 static void set_window_title(term *t);
 static void launch_url(char *url);
+static void zoom(gboolean b, struct term *t);
 
 static inline term* get_current_term(window *w);
 static inline term* get_nth_term(window *w, guint page);
@@ -93,7 +94,7 @@ static GOptionEntry options[] = {
     "Path to configuration file to use.", NULL }, 
   { "execute", 'e', 0, G_OPTION_ARG_STRING, &start_program,
     "execute this command.", NULL }, 
-  { "version", 0, 0, G_OPTION_ARG_NONE, &show_version,
+  { "version", 'v', 0, G_OPTION_ARG_NONE, &show_version,
     "Print version information and exit", NULL }, 
   { NULL } 
 }; 
@@ -123,6 +124,17 @@ static void launch_url(char *url) {
   g_spawn_command_line_async(g_strconcat(config->browser_command, " ", url, NULL), NULL);	
 }
 
+static void zoom(gboolean b, struct term *t) {
+
+  int size = -2000;
+  if(b) 
+    size = 2000;
+  PangoFontDescription *font = vte_terminal_get_font(VTE_TERMINAL(t->vte));
+  pango_font_description_set_size(font, pango_font_description_get_size(font) + size);
+  vte_terminal_set_font(VTE_TERMINAL(t->vte), font);
+
+}
+
 
 /* key event handler */
 gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
@@ -147,6 +159,14 @@ gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
     }
     if (g == GDK_V) {
       vte_terminal_paste_clipboard(VTE_TERMINAL(get_current_term(w)->vte));
+      return TRUE;
+    }
+    if (g == GDK_plus) {
+      zoom(TRUE, get_current_term(w));
+      return TRUE;
+    }
+    if (g == GDK_underscore) {
+      zoom(FALSE, get_current_term(w));
       return TRUE;
     }
     if (g == GDK_C) {
@@ -174,7 +194,7 @@ gboolean event_key(GtkWidget *widget, GdkEventKey *event, window *w) {
       return TRUE;
     }
   }
-    
+
   if(g == GDK_KEY_Forward) {
     tab_switch(TRUE, w);
     return  TRUE;
@@ -576,6 +596,11 @@ static void parse_config_file(gchar *config_file) {
     config->font = DEFAULT_FONT;
   }
 
+  if (NULL == config->window_width || NULL == config->window_height) {
+    config->window_width = DEFAULT_WINDOW_WIDTH;
+    config->window_height = DEFAULT_WINDOW_HEIGHT;
+  }
+
   if(NULL == config->browser_command) {
     config->browser_command = DEFAULT_BROWSER_COMMAND; 
   }
@@ -597,7 +622,7 @@ int main(int argc, char* argv[]) {
   }
 
   if (show_version) {
-    printf(VERSION);
+    printf("%s \n", VERSION);
     return 0;
   }
 

@@ -1,0 +1,45 @@
+.TH SVTE 1 svte\-VERSION
+.SH NAME
+svte \- simple virtual terminal emulator
+.SH SYNOPSIS
+.B svte
+.RB [ \-c
+.IR config-file ]
+.RB [ \-e
+.IR execute ]
+.RB [ \-v ]
+.P
+.BR svte " ..."
+.SH DESCRIPTION
+.B svte
+svte is a terminal that is flexible and has a small codebase. Its aim is to be
+lightweight and fast, while providing nice integration with a modern Linux
+environment. svte is yet another minimal GTK incarnation of VTE.
+.P
+.SH OPTIONS
+.TP
+.B \-c, --config-file
+use the config file provided by this argument instead of the default (~/.svterc)
+.TP
+.B \-e, --execute
+svte will launch indicated program instead of the users default shell. xterm
+style.
+.TP
+.B \-v, --version
+print current version
+.SH USAGE
+svte is completely controlled by the keyboard. The shortcuts are not yet 
+configurable.
+.TP
+.B Ctrl + Shift + t
+Open a new tab.
+.TP
+.B Ctrl + Shift + n
+Open a new window.
+.TP
+.B Ctrl + Shift + w 
+Close current tab, if there is only one tab, close the window
+.SH FILES
+.TP
+.I /home/$USER/.svtrc
+The default svte config file that svte will attempt to read.
