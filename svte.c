@@ -19,7 +19,7 @@
 
 #include "defaults.h"
 #include <gdk/gdkkeysyms.h>
-#include <glib/goption.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <vte/vte.h>
 #include <unistd.h>
@@ -596,7 +596,7 @@ static void parse_config_file(gchar *config_file) {
     config->font = DEFAULT_FONT;
   }
 
-  if (NULL == config->window_width || NULL == config->window_height) {
+  if (0 == config->window_width || 0 == config->window_height) {
     config->window_width = DEFAULT_WINDOW_WIDTH;
     config->window_height = DEFAULT_WINDOW_HEIGHT;
   }
